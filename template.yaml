@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Base EC2 setup for self-hosted n8n
+
+Parameters:
+  KeyPairName:
+    Type: String
+    Description: Name of an existing EC2 KeyPair for SSH access
+  DefaultVpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: Default VPC ID
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: A subnet in the VPC
+
+Resources:
+  N8nSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH
+      VpcId: !Ref DefaultVpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  N8nInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      KeyName: !Ref KeyPairName
+      ImageId: ami-0a686caadc1359894  # Ubuntu 22.04 LTS (eu-west-2)
+      SecurityGroupIds:
+        - !Ref N8nSecurityGroup
+      SubnetId: !Ref SubnetId
+
+Outputs:
+  InstancePublicIP:
+    Description: The public IP of the EC2 instance
+    Value: !GetAtt N8nInstance.PublicIp
