@@ -1,0 +1,7 @@
+{
+  "name": "n8n-docker-aws",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Simon Filtness <simon_filtness@yahoo.co.uk>",
+  "license": "MIT"
+}
