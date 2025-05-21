@@ -9,4 +9,5 @@ services:
     env_file:
       - .env
     volumes:
-      - ./n8n-data:/home/node/.n8n
+      - /mnt/n8n-data:/home/node/.n8n
+    user: "1000:1000"
